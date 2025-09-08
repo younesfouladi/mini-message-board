@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import type {
   ErrorRequestHandler,
   Request,
@@ -11,6 +12,7 @@ import { messageRouter } from "./routes/messageRouter.ts";
 const port = process.env.PORT;
 const app = express();
 
+app.use(cors({ origin: process.env.CLIENT }));
 app.use("/api/messages", messageRouter);
 
 app.listen(port, (err) => {
