@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Spinner } from "@heroui/spinner";
 import { ReceiverBubble } from "./chatBubbles";
 import { AnimatePresence, motion } from "motion/react";
@@ -13,6 +13,7 @@ interface IData {
 export const Messages = ({ server }: { server: string }) => {
   const [data, setData] = useState<IData[] | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
@@ -26,6 +27,21 @@ export const Messages = ({ server }: { server: string }) => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [data]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowScroll(!entry.isIntersecting);
+      },
+      {
+        root: scrollRef.current,
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
+    if (bottomRef.current) observer.observe(bottomRef.current);
+    return () => observer.disconnect();
+  }, [data]);
+
   if (!data)
     return (
       <div className="fixed w-full top-1/2 flex gap-1 items-center justify-center text-neutral-400 text-xl">
@@ -34,17 +50,6 @@ export const Messages = ({ server }: { server: string }) => {
       </div>
     );
 
-  const handleScrollToBottom = (e: React.UIEvent<HTMLDivElement>) => {
-    if (
-      e.currentTarget.scrollTop + e.currentTarget.clientHeight <
-      e.currentTarget.scrollHeight - 50
-    ) {
-      setShowScroll(true);
-    } else {
-      setShowScroll(false);
-    }
-  };
-
   const handleScroll = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -52,7 +57,7 @@ export const Messages = ({ server }: { server: string }) => {
   return (
     <div
       className="px-4 pb-22 flex flex-col gap-4 h-full overflow-y-auto"
-      onScroll={(e) => handleScrollToBottom(e)}
+      ref={scrollRef}
     >
       {data.map((msg, index) =>
         index > 0 && data[index - 1].userId === msg.userId ? (
