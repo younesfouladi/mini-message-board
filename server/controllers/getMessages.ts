@@ -3,8 +3,25 @@ import type { Request, Response, NextFunction } from "express";
 import fs from "fs/promises";
 import path from "path";
 
+type Imessage = [string, string];
+
+interface Idata {
+  name: string;
+  messages: Imessage[];
+}
+
+type IDb = Record<string, Idata>;
+
+interface ISortedMessage {
+  userId: string;
+  userName: string;
+  text: string;
+  time: string;
+}
+
 const __dirname = import.meta.dirname;
 const DB_PATH = path.join(__dirname, "..", "models", "db.json");
+const MSG_PATH = path.join(__dirname, "..", "models", "msg.json");
 
 export async function getMessages(
   req: Request,
@@ -12,8 +29,9 @@ export async function getMessages(
   next: NextFunction
 ) {
   try {
-    const data = await fs.readFile(DB_PATH, "utf-8");
-    res.json(JSON.parse(data));
+    const db = await fs.readFile(MSG_PATH, "utf-8");
+    const data: IDb = JSON.parse(db);
+    res.json(data);
   } catch (err) {
     console.error("ERROR READING DB FILE", err);
     next(err);

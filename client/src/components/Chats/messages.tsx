@@ -2,16 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Spinner } from "@heroui/spinner";
 import { ReceiverBubble } from "./chatBubbles";
 
-type Imessage = [string, string];
-
-interface Idata {
-  name: string;
-  messages: Imessage[];
-}
-
-type IDb = Record<string, Idata>;
-
-interface ISortedMessage {
+interface IData {
   userId: string;
   userName: string;
   text: string;
@@ -19,7 +10,7 @@ interface ISortedMessage {
 }
 
 export const Messages = ({ server }: { server: string }) => {
-  const [data, setData] = useState<IDb | null>(null);
+  const [data, setData] = useState<IData[] | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -41,21 +32,10 @@ export const Messages = ({ server }: { server: string }) => {
       </div>
     );
 
-  const sortedMessages: ISortedMessage[] = Object.entries(data)
-    .flatMap(([userId, user]) =>
-      user.messages.map(([text, time]) => ({
-        userId,
-        userName: user.name,
-        text,
-        time,
-      }))
-    )
-    .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
-
   return (
     <div className="px-4 pb-22 flex flex-col gap-4 h-full overflow-y-auto">
-      {sortedMessages.map((msg, index) =>
-        index > 0 && sortedMessages[index - 1].userId === msg.userId ? (
+      {data.map((msg, index) =>
+        index > 0 && data[index - 1].userId === msg.userId ? (
           <ReceiverBubble
             key={msg.userId + msg.time}
             userId={msg.userId}
