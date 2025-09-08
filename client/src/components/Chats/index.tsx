@@ -11,10 +11,10 @@ export const Chats = () => {
       .then((res) => res.json())
       .then((data) => setMessagesCount(data.count))
       .catch((err) => console.log(`Error Fetching msg counts : ${err}`));
-  }, []);
+  }, [server]);
 
   return (
-    <div>
+    <div className="h-full grid grid-rows-[min-content_1fr]">
       <div className="flex items-center justify-between bg-neutral-800 p-4">
         <button className="text-neutral-50">
           <svg
@@ -59,7 +59,7 @@ export const Chats = () => {
           </svg>
         </button>
       </div>
-      <Messages />
+      <Messages server={server} />
       <div className="text-neutral-50 bg-neutral-800 fixed bottom-6 rounded-full p-1 left-1/2 -translate-x-1/2 flex items-center">
         <input
           type="text"
