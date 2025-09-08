@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Spinner } from "@heroui/spinner";
+import { ReceiverBubble } from "./chatBubbles";
 
 type Imessage = [string, string];
 
@@ -53,23 +54,27 @@ export const Messages = ({ server }: { server: string }) => {
 
   return (
     <div className="px-4 pb-22 flex flex-col gap-4 h-full overflow-y-auto">
-      {sortedMessages.map((msg) => (
-        <div key={msg.userId + msg.time} className="flex gap-2">
-          <div
-            role="img"
-            className="bg-pink-300 w-10 h-10 rounded-full flex items-center justify-center"
-          >
-            {msg.userName.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <h4 className=" text-neutral-200">{msg.userName}</h4>
-            <div className="text-neutral-400 bg-neutral-800 p-2 rounded-xl">
-              <p>{msg.text}</p>
-              <p>{msg.time}</p>
-            </div>
-          </div>
-        </div>
-      ))}
+      {sortedMessages.map((msg, index) =>
+        index > 0 && sortedMessages[index - 1].userId === msg.userId ? (
+          <ReceiverBubble
+            key={msg.userId + msg.time}
+            userId={msg.userId}
+            userName={msg.userName}
+            text={msg.text}
+            time={msg.time}
+            isLastUser={true}
+          />
+        ) : (
+          <ReceiverBubble
+            key={msg.userId + msg.time}
+            userId={msg.userId}
+            userName={msg.userName}
+            text={msg.text}
+            time={msg.time}
+            isLastUser={false}
+          />
+        )
+      )}
       <div ref={bottomRef}></div>
     </div>
   );
