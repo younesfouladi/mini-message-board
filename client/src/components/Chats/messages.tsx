@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "@heroui/spinner";
 import { ReceiverBubble } from "./chatBubbles";
+import { AnimatePresence, motion } from "motion/react";
 
 interface IData {
   userId: string;
@@ -12,6 +13,7 @@ interface IData {
 export const Messages = ({ server }: { server: string }) => {
   const [data, setData] = useState<IData[] | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
     fetch(`${server}/api/messages`)
@@ -32,8 +34,26 @@ export const Messages = ({ server }: { server: string }) => {
       </div>
     );
 
+  const handleScrollToBottom = (e: React.UIEvent<HTMLDivElement>) => {
+    if (
+      e.currentTarget.scrollTop + e.currentTarget.clientHeight <
+      e.currentTarget.scrollHeight - 50
+    ) {
+      setShowScroll(true);
+    } else {
+      setShowScroll(false);
+    }
+  };
+
+  const handleScroll = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="px-4 pb-22 flex flex-col gap-4 h-full overflow-y-auto">
+    <div
+      className="px-4 pb-22 flex flex-col gap-4 h-full overflow-y-auto"
+      onScroll={(e) => handleScrollToBottom(e)}
+    >
       {data.map((msg, index) =>
         index > 0 && data[index - 1].userId === msg.userId ? (
           <ReceiverBubble
@@ -55,6 +75,36 @@ export const Messages = ({ server }: { server: string }) => {
           />
         )
       )}
+
+      <AnimatePresence>
+        {showScroll && (
+          <motion.div
+            className="p-1 rounded-full w-10 h-10 flex items-center justify-center bg-neutral-800 text-neutral-300 fixed right-4 bottom-20 cursor-pointer"
+            key="scrollBtn"
+            initial={{ opacity: 0, scale: 0, rotate: 180, y: 50 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+            exit={{ opacity: 0, scale: 0, rotate: 180, y: 50 }}
+            transition={{ duration: 0.3 }}
+            onClick={handleScroll}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m19.5 8.25-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div ref={bottomRef}></div>
     </div>
   );

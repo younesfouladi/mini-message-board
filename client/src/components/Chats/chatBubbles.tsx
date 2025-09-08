@@ -21,9 +21,15 @@ export const ReceiverBubble = ({
             className="w-10 h-10 rounded-full flex items-center justify-center"
           ></div>
           <div>
-            <div className="text-neutral-400 bg-neutral-800 p-2 rounded-xl">
-              <p>{text}</p>
-              <p>{time}</p>
+            <div className="bg-neutral-800 p-2 rounded-xl flex flex-col">
+              <p className="text-neutral-300">{text}</p>
+              <p className="self-end text-sm text-neutral-500">
+                {new Date(time).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}
+              </p>
             </div>
           </div>
         </div>
@@ -36,10 +42,18 @@ export const ReceiverBubble = ({
             {userName.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h4 className=" text-neutral-200">{userName}</h4>
-            <div className="text-neutral-400 bg-neutral-800 p-2 rounded-xl">
-              <p>{text}</p>
-              <p>{time}</p>
+            <h4 className="text-neutral-200 font-bold text-sm my-1">
+              {userName}
+            </h4>
+            <div className="bg-neutral-800 p-2 rounded-xl flex flex-col">
+              <p className="text-neutral-300">{text}</p>
+              <p className="self-end text-sm text-neutral-500">
+                {new Date(time).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}
+              </p>
             </div>
           </div>
         </div>
