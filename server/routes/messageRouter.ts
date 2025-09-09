@@ -4,6 +4,6 @@ import { getMessagesCount } from "../controllers/getMessagesCount.ts";
 
 export const messageRouter = express.Router();
 
-messageRouter.get("/", getMessages);
+messageRouter.post("/get", getMessages);
 
 messageRouter.get("/count", getMessagesCount);

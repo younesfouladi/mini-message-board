@@ -10,14 +10,17 @@ interface IData {
   time: string;
 }
 
+type Idb = [string, IData];
+
 export const Messages = ({ server }: { server: string }) => {
-  const [data, setData] = useState<IData[] | null>(null);
+  const [data, setData] = useState<Idb[] | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [showScroll, setShowScroll] = useState(false);
+  const [count, setCount] = useState<number>(50);
 
   useEffect(() => {
-    fetch(`${server}/api/messages`)
+    fetch(`${server}/api/messages/get?count=${count}`, { method: "POST" })
       .then((res) => res.json())
       .then((data) => setData(data))
       .catch((err) => console.log(`Error Fetching Data : ${err}`));
@@ -58,23 +61,23 @@ export const Messages = ({ server }: { server: string }) => {
       className="px-4 pb-4 flex flex-col gap-4 h-full overflow-y-auto"
       ref={scrollRef}
     >
-      {data.map((msg, index) =>
-        index > 0 && data[index - 1].userId === msg.userId ? (
+      {data.map((item, index) =>
+        index > 0 && data[index - 1][1].userId === item[1].userId ? (
           <ReceiverBubble
-            key={msg.userId + msg.time}
-            userId={msg.userId}
-            userName={msg.userName}
-            text={msg.text}
-            time={msg.time}
+            key={item[1].userId + item[1].time}
+            userId={item[1].userId}
+            userName={item[1].userName}
+            text={item[1].text}
+            time={item[1].time}
             isLastUser={true}
           />
         ) : (
           <ReceiverBubble
-            key={msg.userId + msg.time}
-            userId={msg.userId}
-            userName={msg.userName}
-            text={msg.text}
-            time={msg.time}
+            key={item[1].userId + item[1].time}
+            userId={item[1].userId}
+            userName={item[1].userName}
+            text={item[1].text}
+            time={item[1].time}
             isLastUser={false}
           />
         )
