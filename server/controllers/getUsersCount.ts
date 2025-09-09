@@ -5,7 +5,7 @@ import path from "path";
 const __dirname = import.meta.dirname;
 const DB_PATH = path.join(__dirname, "..", "models", "db.json");
 
-export async function getMessagesCount(
+export async function getUsersCount(
   req: Request,
   res: Response,
   next: NextFunction
@@ -15,7 +15,7 @@ export async function getMessagesCount(
     const jsonData = JSON.parse(data);
     let count = 0;
     for (let id in jsonData) {
-      count += jsonData[id].messages.length;
+      count++;
     }
     res.json({ count: count });
   } catch (err) {

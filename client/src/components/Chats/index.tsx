@@ -4,12 +4,12 @@ import { Spinner } from "@heroui/spinner";
 
 export const Chats = () => {
   const server = import.meta.env.VITE_SERVER;
-  const [messagesCount, setMessagesCount] = useState<number>(0);
+  const [usersCount, setusersCount] = useState<number>(0);
 
   useEffect(() => {
-    fetch(`${server}/api/messages/count`)
+    fetch(`${server}/api/users/count`)
       .then((res) => res.json())
-      .then((data) => setMessagesCount(data.count))
+      .then((data) => setusersCount(data.count))
       .catch((err) => console.log(`Error Fetching msg counts : ${err}`));
   }, [server]);
 
@@ -35,10 +35,10 @@ export const Chats = () => {
         <div className="flex flex-col items-center">
           <h1 className="text-neutral-50 text-lg">TOP Team</h1>
           <div className="flex text-neutral-500 text-shadow-amber-700">
-            {messagesCount === 0 ? (
+            {usersCount === 0 ? (
               <Spinner size="sm" color="default" />
             ) : (
-              <p>{messagesCount} messages</p>
+              <p>{usersCount} members</p>
             )}
           </div>
         </div>
