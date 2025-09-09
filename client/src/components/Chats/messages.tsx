@@ -18,17 +18,19 @@ export const Messages = ({ server }: { server: string }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [showScroll, setShowScroll] = useState(false);
   const [count, setCount] = useState<number>(50);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setCount(() => count + 50);
     fetch(`${server}/api/messages/get?count=${count}`, { method: "POST" })
       .then((res) => res.json())
       .then((data) => setData(data))
       .catch((err) => console.log(`Error Fetching Data : ${err}`));
-  }, [server]);
+  }, [server, isLoading]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [data]);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -41,6 +43,25 @@ export const Messages = ({ server }: { server: string }) => {
       }
     );
     if (bottomRef.current) observer.observe(bottomRef.current);
+    return () => observer.disconnect();
+  }, [data]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsLoading(entry.isIntersecting);
+      },
+      {
+        root: scrollRef.current,
+        threshold: 0.5,
+      }
+    );
+    console.log(count);
+    const firstChild = scrollRef.current?.firstChild;
+    if (firstChild instanceof Element) {
+      observer.observe(firstChild);
+    }
+
     return () => observer.disconnect();
   }, [data]);
 
@@ -58,7 +79,7 @@ export const Messages = ({ server }: { server: string }) => {
 
   return (
     <div
-      className="px-4 pb-4 flex flex-col gap-4 h-full overflow-y-auto"
+      className="px-4 pb-4 flex flex-col gap-4 h-full overflow-y-auto relative"
       ref={scrollRef}
     >
       {data.map((item, index) =>
@@ -111,7 +132,22 @@ export const Messages = ({ server }: { server: string }) => {
           </motion.div>
         )}
       </AnimatePresence>
-
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="loadingPopup"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="text-neutral-200 absolute top-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-700 to-purple-500 py-2 px-4 rounded-full"
+          >
+            <div className="font-bold flex items-center justify-center gap-1">
+              Loading
+              <Spinner variant="dots" size="sm" color="white" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div ref={bottomRef}></div>
     </div>
   );
