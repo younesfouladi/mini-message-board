@@ -34,8 +34,7 @@ export const Messages = ({ server }: { server: string }) => {
       },
       {
         root: scrollRef.current,
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
+        threshold: 0.3,
       }
     );
     if (bottomRef.current) observer.observe(bottomRef.current);
@@ -44,7 +43,7 @@ export const Messages = ({ server }: { server: string }) => {
 
   if (!data)
     return (
-      <div className="fixed w-full top-1/2 flex gap-1 items-center justify-center text-neutral-400 text-xl">
+      <div className="w-full top-1/2 flex gap-1 items-center justify-center text-neutral-400 text-xl">
         Loading
         <Spinner size="sm" color="default" variant="dots" />
       </div>
@@ -56,7 +55,7 @@ export const Messages = ({ server }: { server: string }) => {
 
   return (
     <div
-      className="px-4 pb-22 flex flex-col gap-4 h-full overflow-y-auto"
+      className="px-4 pb-4 flex flex-col gap-4 h-full overflow-y-auto"
       ref={scrollRef}
     >
       {data.map((msg, index) =>
@@ -84,7 +83,7 @@ export const Messages = ({ server }: { server: string }) => {
       <AnimatePresence>
         {showScroll && (
           <motion.div
-            className="p-1 rounded-full w-10 h-10 flex items-center justify-center bg-neutral-800 text-neutral-300 fixed right-4 bottom-20 cursor-pointer"
+            className="p-1 rounded-full w-10 h-10 flex items-center justify-center bg-section text-neutral-300 fixed right-4 bottom-20 cursor-pointer"
             key="scrollBtn"
             initial={{ opacity: 0, scale: 0, rotate: 180, y: 50 }}
             animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}

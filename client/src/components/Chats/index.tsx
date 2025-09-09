@@ -14,8 +14,8 @@ export const Chats = () => {
   }, [server]);
 
   return (
-    <div className="h-full grid grid-rows-[min-content_1fr]">
-      <div className="flex items-center justify-between bg-neutral-800 p-4">
+    <div className="h-full grid grid-rows-[min-content_1fr_min-content]">
+      <div className="flex items-center justify-between bg-section p-4">
         <button className="text-neutral-50">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -60,26 +60,28 @@ export const Chats = () => {
         </button>
       </div>
       <Messages server={server} />
-      <div className="text-neutral-50 bg-neutral-800 fixed bottom-6 rounded-full p-1 left-1/2 -translate-x-1/2 flex items-center">
+      <div className="text-neutral-50 py-4 flex gap-2 items-center justify-center h-fit w-full border-t-1 border-section">
         <input
           type="text"
           placeholder="Type something..."
-          className="bg-neutral-900 rounded-full py-2 px-4 min-w-[70vw] sm:min-w-100"
+          className="bg-section rounded-full py-2 px-4 min-w-[70vw] sm:min-w-100"
         />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6 mx-1"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-          />
-        </svg>
+        <span className="bg-section p-2 rounded-full">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+            />
+          </svg>
+        </span>
       </div>
     </div>
   );

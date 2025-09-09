@@ -16,12 +16,9 @@ export const ReceiverBubble = ({
     <>
       {isLastUser ? (
         <div className="flex gap-2">
-          <div
-            role="img"
-            className="w-10 h-10 rounded-full flex items-center justify-center"
-          ></div>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center"></div>
           <div>
-            <div className="bg-neutral-800 p-2 rounded-xl flex flex-col">
+            <div className="bg-section px-4 py-2 flex flex-col rounded-r-3xl rounded-l-3xl rounded-tl-md">
               <p className="text-neutral-300">{text}</p>
               <p className="self-end text-sm text-neutral-500">
                 {new Date(time).toLocaleTimeString([], {
@@ -45,7 +42,7 @@ export const ReceiverBubble = ({
             <h4 className="text-neutral-200 font-bold text-sm my-1">
               {userName}
             </h4>
-            <div className="bg-neutral-800 p-2 rounded-xl flex flex-col">
+            <div className="bg-section px-4 py-2 flex flex-col rounded-r-3xl rounded-bl-3xl rounded-tl-md">
               <p className="text-neutral-300">{text}</p>
               <p className="self-end text-sm text-neutral-500">
                 {new Date(time).toLocaleTimeString([], {

@@ -18,4 +18,6 @@ body {
 
 @theme {
   --font-main: "Vazirmatn", sans-serif;
+  --color-main: #181828;
+  --color-section: #262641;
 }
