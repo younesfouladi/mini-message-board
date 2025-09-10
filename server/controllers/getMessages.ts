@@ -32,6 +32,7 @@ export async function getMessages(
     const count = Number(req.query.count);
     const db = await fs.readFile(MSG_PATH, "utf-8");
     const data: IDb = JSON.parse(db);
+
     res.json(Object.entries(data).slice(-count));
   } catch (err) {
     console.error("ERROR READING DB FILE", err);

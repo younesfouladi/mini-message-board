@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Spinner } from "@heroui/spinner";
 import { ReceiverBubble } from "./chatBubbles";
 import { AnimatePresence, motion } from "motion/react";
@@ -19,18 +25,20 @@ export const Messages = ({ server }: { server: string }) => {
   const [showScroll, setShowScroll] = useState(false);
   const [count, setCount] = useState<number>(50);
   const [isLoading, setIsLoading] = useState(false);
+  const isLoadingRef = useRef(false);
+  const prevScroll = useRef({ height: 0, top: 0 });
+  const isFetchingMore = useRef(false);
 
   useEffect(() => {
-    setCount(() => count + 50);
-    fetch(`${server}/api/messages/get?count=${count}`, { method: "POST" })
+    fetch(`${server}/api/messages/get?count=50`, { method: "POST" })
       .then((res) => res.json())
       .then((data) => setData(data))
       .catch((err) => console.log(`Error Fetching Data : ${err}`));
-  }, [server, isLoading]);
+  }, [server]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  }, [server]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -46,23 +54,57 @@ export const Messages = ({ server }: { server: string }) => {
     return () => observer.disconnect();
   }, [data]);
 
+  const loadMore = useCallback(async () => {
+    if (isFetchingMore.current) return;
+    if (!scrollRef.current) return;
+    isFetchingMore.current = true;
+    prevScroll.current.height = scrollRef.current.scrollHeight;
+    prevScroll.current.top = scrollRef.current.scrollTop;
+    setCount((prev) => prev + 50);
+    try {
+      const res = await fetch(`${server}/api/messages/get?count=${count}`, {
+        method: "POST",
+      });
+      const json: Idb[] = await res.json();
+      setData(() => json);
+    } catch (err) {
+      console.error(`Error Fetching Previous Messages : ${err}`);
+    } finally {
+      isFetchingMore.current = false;
+    }
+  }, [server, count]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsLoading(entry.isIntersecting);
+        isLoadingRef.current = entry.isIntersecting;
+
+        if (entry.isIntersecting) {
+          loadMore();
+        }
       },
       {
         root: scrollRef.current,
-        threshold: 0.5,
+        threshold: 0.1,
       }
     );
-    console.log(count);
     const firstChild = scrollRef.current?.firstChild;
     if (firstChild instanceof Element) {
       observer.observe(firstChild);
     }
 
     return () => observer.disconnect();
+  }, [data, loadMore]);
+
+  useLayoutEffect(() => {
+    if (!isLoadingRef.current) return;
+    if (!scrollRef.current) return;
+
+    const newHeight = scrollRef.current?.scrollHeight;
+    const heightDiff = newHeight - prevScroll.current.height;
+    scrollRef.current.scrollTop = prevScroll.current.top + heightDiff;
+    prevScroll.current = { height: 0, top: 0 };
   }, [data]);
 
   if (!data)
