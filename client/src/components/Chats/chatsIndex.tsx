@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Messages } from "./messages";
 import { Spinner } from "@heroui/spinner";
+import { useUsersCount } from "../../hooks/useUsersCount";
 
 export const Chats = () => {
   const server = import.meta.env.VITE_SERVER;
-  const [usersCount, setusersCount] = useState<number>(0);
+  const usersCount = useUsersCount((states) => states.usersCount);
+  const setUsersCount = useUsersCount((states) => states.setUsersCount);
 
   useEffect(() => {
     fetch(`${server}/api/users/count`)
       .then((res) => res.json())
-      .then((data) => setusersCount(data.count))
+      .then((data) => setUsersCount(data.count))
       .catch((err) => console.log(`Error Fetching msg counts : ${err}`));
-  }, [server]);
+  }, [server, setUsersCount]);
 
   return (
     <div className="h-full grid grid-rows-[min-content_1fr_min-content]">

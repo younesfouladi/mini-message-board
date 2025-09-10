@@ -47,6 +47,7 @@ export const Messages = ({ server }: { server: string }) => {
       },
       {
         root: scrollRef.current,
+        rootMargin: "0px 0px 50px 0px",
         threshold: 0.3,
       }
     );
