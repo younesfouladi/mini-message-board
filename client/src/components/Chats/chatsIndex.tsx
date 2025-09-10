@@ -18,10 +18,10 @@ export const Chats = () => {
   }, [server, setUsersCount]);
 
   return (
-    <div className="h-full grid grid-rows-[min-content_1fr_min-content]">
-      <div className="flex items-center justify-between bg-section p-4">
+    <div className="h-full grid grid-rows-[min-content_1fr_min-content] w-full max-w-3xl">
+      <div className="flex items-center justify-between bg-section p-4 md:rounded-b-4xl 2xl:justify-center">
         <button
-          className="text-neutral-50 cursor-pointer"
+          className="text-neutral-50 cursor-pointer 2xl:hidden"
           onClick={() => setShowUsers(true)}
         >
           <svg
@@ -49,7 +49,7 @@ export const Chats = () => {
             )}
           </div>
         </div>
-        <button className="text-neutral-50">
+        <button className="text-neutral-50 2xl:hidden">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

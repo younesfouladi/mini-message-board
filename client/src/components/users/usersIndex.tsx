@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useUsersCount } from "../../hooks/useUsersCount";
 import { useMessagesCount } from "../../hooks/useMessagesCount";
 import { useShowUsers } from "../../hooks/useShowUsers";
@@ -34,12 +34,39 @@ export default function Users() {
       .catch((err) => console.error(`Error Fetching Users Data`, err));
   }, [server]);
 
+  const handleResize = useCallback(() => {
+    if (window.innerWidth >= 1536) {
+      setShowUsers(true);
+    } else {
+      setShowUsers(false);
+    }
+  }, [setShowUsers]);
+
+  useEffect(() => {
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResize]);
+
   return (
     <>
       {showUsers && (
-        <aside className="absolute z-10 inset-0 p-10 backdrop-blur-sm bg-[#11111196] flex items-center justify-center w-full h-full">
+        <aside
+          className="absolute z-10 inset-0 p-10 backdrop-blur-sm bg-[#11111196] flex items-center justify-center w-full h-full 2xl:backdrop-blur-none 2xl:bg-inherit 2xl:static 2xl:p-0 2xl:max-h-4/5 2xl:w-fit"
+          onClick={(e) => {
+            if (window.innerWidth >= 1536) return;
+            e.stopPropagation();
+            if (e.target === e.currentTarget) {
+              setShowUsers(false);
+            }
+          }}
+        >
           <button
-            className="text-neutral-50 cursor-pointer fixed top-8 right-8"
+            className="text-neutral-50 cursor-pointer fixed top-8 right-8 2xl:hidden"
             onClick={() => setShowUsers(false)}
           >
             <svg
