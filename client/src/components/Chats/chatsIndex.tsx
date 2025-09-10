@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { Messages } from "./messages";
 import { Spinner } from "@heroui/spinner";
 import { useUsersCount } from "../../hooks/useUsersCount";
+import { useShowUsers } from "../../hooks/useShowUsers";
 
 export const Chats = () => {
   const server = import.meta.env.VITE_SERVER;
   const usersCount = useUsersCount((states) => states.usersCount);
   const setUsersCount = useUsersCount((states) => states.setUsersCount);
+  const setShowUsers = useShowUsers((states) => states.setShowUsers);
 
   useEffect(() => {
     fetch(`${server}/api/users/count`)
@@ -18,7 +20,10 @@ export const Chats = () => {
   return (
     <div className="h-full grid grid-rows-[min-content_1fr_min-content]">
       <div className="flex items-center justify-between bg-section p-4">
-        <button className="text-neutral-50">
+        <button
+          className="text-neutral-50 cursor-pointer"
+          onClick={() => setShowUsers(true)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
