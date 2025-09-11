@@ -34,7 +34,7 @@ export const ReceiverBubble = ({
         <div className="flex gap-2">
           <div
             role="img"
-            className="bg-pink-300 w-10 h-10 rounded-full flex items-center justify-center"
+            className="bg-pink-400 w-10 h-10 rounded-full flex items-center justify-center"
           >
             {userName.charAt(0).toUpperCase()}
           </div>
