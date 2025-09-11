@@ -9,6 +9,7 @@ function App() {
   const userId = useUserLogin((state) => state.userId);
   const setIsLogin = useUserLogin((states) => states.setIsLogin);
 
+  // First Login
   useEffect(() => {
     if (
       !localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE) &&
@@ -18,6 +19,7 @@ function App() {
     }
   }, [userId]);
 
+  // Already Logged in
   useEffect(() => {
     if (localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
       const id = localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE);
