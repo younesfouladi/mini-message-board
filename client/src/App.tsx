@@ -2,10 +2,28 @@ import { Chats } from "./components/Chats/chatsIndex";
 import Users from "./components/users/usersIndex";
 import { Navigate } from "react-router-dom";
 import { useUserLogin } from "./hooks/useUserLogin";
+import { useEffect } from "react";
 
 function App() {
   const isLogin = useUserLogin((states) => states.isLogin);
+  const userId = useUserLogin((state) => state.userId);
   const setIsLogin = useUserLogin((states) => states.setIsLogin);
+
+  useEffect(() => {
+    if (
+      !localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE) &&
+      userId.trim() !== ""
+    ) {
+      localStorage.setItem(import.meta.env.VITE_LOCALSTORAGE, `${userId}`);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
+      const id = localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE);
+      setIsLogin(true);
+    }
+  }, [userId, setIsLogin]);
 
   return (
     <>
