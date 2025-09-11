@@ -13,13 +13,18 @@ export default function Login() {
   const handleValidity = () => {
     if (!userNameRef.current?.checkValidity()) {
       setError("!REQUIRED - at least 5 characters");
+      setIsValid(false);
     } else {
       setError("");
+      setIsValid(true);
     }
   };
 
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isValid) return;
     e.preventDefault();
+    console.log("hi");
+    // setUserName(userNameRef.current?.value);
   };
 
   return (
@@ -36,13 +41,13 @@ export default function Login() {
                 type="text"
                 name="name"
                 placeholder="Enter Your Name"
-                className="px-4 py-2 w-full bg-main rounded-4xl user-invalid:border-red-700 user-invalid:border-2 user-valid:border-green-700 user-valid:border-2"
+                className="px-4 py-2 w-full bg-main rounded-4xl"
                 minLength={5}
                 required
                 ref={userNameRef}
                 onChange={handleValidity}
               />
-              {error !== "" ? (
+              {!isValid ? (
                 <div className="absolute right-2">
                   <Tooltip
                     key="formerror"
@@ -70,7 +75,9 @@ export default function Login() {
             </label>
             <button
               type="submit"
-              className="bg-neutral-100 rounded-full w-[90%] text-main font-bold px-6 py-2"
+              className={`${
+                isValid ? "bg-neutral-100" : "bg-neutral-600"
+              } rounded-full w-[90%] text-main font-bold px-6 py-2 transition-background`}
               onClick={(e) => handleLogin(e)}
             >
               Login
