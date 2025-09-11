@@ -3,6 +3,7 @@ import { useUserLogin } from "../../hooks/useUserLogin";
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "@heroui/tooltip";
 import { Navigate } from "react-router-dom";
+import { addToast, ToastProvider } from "@heroui/react";
 
 export default function Login() {
   const setUserName = useUserLogin((states) => states.setUserName);
@@ -11,6 +12,7 @@ export default function Login() {
   const userNameRef = useRef<HTMLInputElement | null>(null);
   const isLogin = useUserLogin((state) => state.isLogin);
   const setIsLogin = useUserLogin((state) => state.setIsLogin);
+  const server = import.meta.env.VITE_SERVER;
 
   useEffect(() => {
     if (localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
@@ -26,13 +28,33 @@ export default function Login() {
     }
   };
 
+  const handleSendUserData = async () => {
+    const userName = useUserLogin.getState().userName;
+    const userId = useUserLogin.getState().userId;
+
+    try {
+      const send = await fetch(
+        `${server}/api/users/add?username=${userName}&userid=${userId}`,
+        { method: "POST" }
+      );
+      await send.json();
+      setIsLogin(true);
+    } catch (err) {
+      addToast({
+        title: "Login Error",
+        description: `Error Sending User data to server : ${err}`,
+        color: "danger",
+      });
+    }
+  };
+
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isValid) return;
     e.preventDefault();
     if (userNameRef.current) {
       setUserName(userNameRef.current?.value);
       setUserId();
-      setIsLogin(true);
+      handleSendUserData();
     }
   };
 
@@ -40,6 +62,7 @@ export default function Login() {
     <>
       {!isLogin ? (
         <div className="flex flex-col w-full h-full bg-main text-neutral-50 justify-center gap-8 items-center p-10">
+          <ToastProvider />
           <h1 className="text-center text-md">
             Welcome to <br /> Mini Message Board
           </h1>
