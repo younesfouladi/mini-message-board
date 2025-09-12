@@ -13,6 +13,7 @@ import { userRouter } from "./routes/userRouter.ts";
 const port = process.env.PORT;
 const app = express();
 
+app.use(express.json());
 app.use(cors({ origin: process.env.CLIENT }));
 app.use("/api/messages", messageRouter);
 app.use("/api/users", userRouter);

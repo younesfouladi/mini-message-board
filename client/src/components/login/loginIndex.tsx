@@ -34,11 +34,12 @@ export default function Login() {
     const userId = useUserLogin.getState().userId;
 
     try {
-      const send = await fetch(
-        `${server}/api/users/add?username=${userName}&userid=${userId}`,
-        { method: "POST" }
-      );
-      await send.json();
+      const req = await fetch(`${server}/api/users/new`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id: userId, name: userName }),
+      });
+      await req.json();
       setIsLogin(true);
     } catch (err) {
       addToast({
