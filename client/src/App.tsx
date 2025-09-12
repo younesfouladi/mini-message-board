@@ -3,25 +3,21 @@ import Users from "./components/users/usersIndex";
 import { Navigate } from "react-router-dom";
 import { useUserLogin } from "./hooks/useUserLogin";
 import { useEffect } from "react";
+import { Profile } from "./components/profile/profileIndex";
 
 function App() {
   const isLogin = useUserLogin((states) => states.isLogin);
   const userId = useUserLogin((state) => state.userId);
   const setIsLogin = useUserLogin((states) => states.setIsLogin);
 
-  // First Login
   useEffect(() => {
-    if (
-      !localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE) &&
-      userId.trim() !== ""
-    ) {
+    // First Login
+    if (!localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
       localStorage.setItem(import.meta.env.VITE_LOCALSTORAGE, `${userId}`);
     }
-  }, [userId]);
 
-  // Already Logged in
-  useEffect(() => {
-    if (localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
+    // Already Logged in
+    else {
       const id = localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE);
       setIsLogin(true);
     }
@@ -36,7 +32,7 @@ function App() {
         >
           <Users />
           <Chats />
-          <aside></aside>
+          <Profile />
         </main>
       ) : (
         <Navigate to="/login" />

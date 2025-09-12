@@ -3,12 +3,14 @@ import { Messages } from "./messages";
 import { Spinner } from "@heroui/spinner";
 import { useUsersCount } from "../../hooks/useUsersCount";
 import { useShowUsers } from "../../hooks/useShowUsers";
+import { useShowProfile } from "../../hooks/useShowProfile";
 
 export const Chats = () => {
   const server = import.meta.env.VITE_SERVER;
   const usersCount = useUsersCount((states) => states.usersCount);
   const setUsersCount = useUsersCount((states) => states.setUsersCount);
   const setShowUsers = useShowUsers((states) => states.setShowUsers);
+  const setShowProfile = useShowProfile((state) => state.setShowProfile);
 
   useEffect(() => {
     fetch(`${server}/api/users/count`)
@@ -49,7 +51,10 @@ export const Chats = () => {
             )}
           </div>
         </div>
-        <button className="text-neutral-50 2xl:hidden">
+        <button
+          className="text-neutral-50 cursor-pointer 2xl:hidden"
+          onClick={() => setShowProfile(true)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
