@@ -62,7 +62,6 @@ export default function Users() {
             className="absolute z-10 inset-0 p-10 backdrop-blur-sm bg-[#11111196] flex items-center justify-center w-full h-full 2xl:backdrop-blur-none 2xl:bg-inherit 2xl:static 2xl:p-0 2xl:max-h-4/5 2xl:w-fit"
             onClick={(e) => {
               if (window.innerWidth >= 1536) return;
-              e.stopPropagation();
               if (e.target === e.currentTarget) {
                 setShowUsers(false);
               }
