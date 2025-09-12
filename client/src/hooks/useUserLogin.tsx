@@ -5,6 +5,7 @@ type IUser = {
   setUserName: (name: string) => void;
   userId: string;
   setUserId: () => void;
+  addUserId: (str: string) => void;
   isLogin: boolean;
   setIsLogin: (bool: boolean) => void;
 };
@@ -21,6 +22,11 @@ export const useUserLogin = create<IUser>((set) => ({
     const id = crypto.randomUUID();
     set(() => ({
       userId: id,
+    }));
+  },
+  addUserId: (str) => {
+    set(() => ({
+      userId: str,
     }));
   },
   isLogin: false,

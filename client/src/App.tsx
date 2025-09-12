@@ -4,24 +4,43 @@ import { Navigate } from "react-router-dom";
 import { useUserLogin } from "./hooks/useUserLogin";
 import { useEffect } from "react";
 import { Profile } from "./components/profile/profileIndex";
+import { useShallow } from "zustand/shallow";
 
 function App() {
   const isLogin = useUserLogin((states) => states.isLogin);
-  const userId = useUserLogin((state) => state.userId);
+  const [userId, addUserId, userName, setUserName] = useUserLogin(
+    useShallow((state) => [
+      state.userId,
+      state.addUserId,
+      state.userName,
+      state.setUserName,
+    ])
+  );
   const setIsLogin = useUserLogin((states) => states.setIsLogin);
 
+  // First Login
   useEffect(() => {
-    // First Login
     if (!localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
-      localStorage.setItem(import.meta.env.VITE_LOCALSTORAGE, `${userId}`);
+      localStorage.setItem(
+        import.meta.env.VITE_LOCALSTORAGE,
+        `${userId},${userName}`
+      );
     }
+  }, [userId, setIsLogin, userName]);
 
-    // Already Logged in
-    else {
-      const id = localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE);
+  // Already Logged in
+  useEffect(() => {
+    if (localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
+      const id_name = localStorage
+        .getItem(import.meta.env.VITE_LOCALSTORAGE)
+        ?.split(",");
+      if (id_name) {
+        addUserId(id_name[0]);
+        setUserName(id_name[1]);
+      }
       setIsLogin(true);
     }
-  }, [userId, setIsLogin]);
+  }, [addUserId, setIsLogin, setUserName]);
 
   return (
     <>

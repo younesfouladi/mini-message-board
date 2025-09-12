@@ -67,36 +67,38 @@ export const Profile = () => {
             </button>
             <div className="text-neutral-50 bg-section flex flex-col gap-2 items-center px-10 py-6 rounded-2xl">
               <h3>Your Profile</h3>
-              <div
-                role="img"
-                className="bg-pink-400 w-12 h-12 rounded-full flex items-center justify-center"
-              >
-                {userName.charAt(0)}
-              </div>
-              <p>{userName}</p>
-              <button
-                className="bg-red-900 flex gap-1 text-red-50 p-2 rounded-xl"
-                onClick={() => {
-                  localStorage.removeItem(import.meta.env.VITE_LOCALSTORAGE);
-                  window.location.href = "/login";
-                }}
-              >
-                Logout
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-5"
+              <div className="bg-main p-4 rounded-2xl flex flex-col items-center gap-4">
+                <div
+                  role="img"
+                  className="bg-pink-400 w-12 h-12 rounded-full flex items-center justify-center"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
-                  />
-                </svg>
-              </button>
+                  {userName.charAt(0)}
+                </div>
+                <p>{userName}</p>
+                <button
+                  className="bg-red-900 flex gap-1 text-red-50 text-sm p-2 rounded-xl"
+                  onClick={() => {
+                    localStorage.removeItem(import.meta.env.VITE_LOCALSTORAGE);
+                    window.location.href = "/login";
+                  }}
+                >
+                  Logout
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </motion.aside>
         )}
