@@ -3,13 +3,26 @@ import { useShowProfile } from "../../hooks/useShowProfile";
 import { useShallow } from "zustand/shallow";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "motion/react";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 
 export const Profile = () => {
-  const userName = useUserLogin((states) => states.userName);
+  const server = import.meta.env.VITE_SERVER;
+  const [userName, userId] = useUserLogin(
+    useShallow((states) => [states.userName, states.userId])
+  );
   const [showProfile, setShowProfile] = useShowProfile(
     useShallow((states) => [states.showProfile, states.setShowProfile])
   );
+  const [count, setCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch(`${server}/api/users/${userId}/count`)
+      .then((res) => res.json())
+      .then((data) => setCount(data))
+      .catch((err) =>
+        console.error(`Error Fetching user messages count : ${err}`)
+      );
+  }, [server, userId]);
 
   const handleResize = useCallback(() => {
     if (window.innerWidth >= 1536) {
@@ -65,18 +78,35 @@ export const Profile = () => {
                 />
               </svg>
             </button>
-            <div className="text-neutral-50 bg-section flex flex-col gap-2 items-center px-10 py-6 rounded-2xl">
+            <div className="text-neutral-50 bg-section flex flex-col gap-2 items-center px-4 py-6 rounded-2xl">
               <h3>Your Profile</h3>
-              <div className="bg-main p-4 rounded-2xl flex flex-col items-center gap-4">
+              <div className="bg-main px-14 py-4 rounded-2xl flex flex-col items-center gap-4">
                 <div
                   role="img"
-                  className="bg-pink-400 w-12 h-12 rounded-full flex items-center justify-center"
+                  className="bg-pink-400 w-18 h-18 rounded-full flex items-center justify-center"
                 >
                   {userName.charAt(0)}
                 </div>
-                <p>{userName}</p>
+                <p className="font-semibold text-lg">{userName}</p>
+                <p className="flex gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+                    />
+                  </svg>
+                  {count}
+                </p>
                 <button
-                  className="bg-red-900 flex gap-1 text-red-50 text-sm p-2 rounded-xl"
+                  className="bg-red-900 cursor-pointer flex gap-1 text-red-50 text-sm p-2 rounded-xl"
                   onClick={() => {
                     localStorage.removeItem(import.meta.env.VITE_LOCALSTORAGE);
                     window.location.href = "/login";
