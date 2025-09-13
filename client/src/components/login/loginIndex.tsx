@@ -88,6 +88,7 @@ export default function Login() {
                       required
                       ref={userNameRef}
                       onChange={handleValidity}
+                      autoFocus
                     />
                     {!isValid ? (
                       <div className="absolute right-2">

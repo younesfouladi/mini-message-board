@@ -1,4 +1,4 @@
-type IBubble = {
+type IRBubble = {
   userId?: string;
   userName: string;
   text: string;
@@ -11,7 +11,7 @@ export const ReceiverBubble = ({
   text,
   time,
   isLastUser,
-}: IBubble) => {
+}: IRBubble) => {
   return (
     <>
       {isLastUser ? (
@@ -55,6 +55,35 @@ export const ReceiverBubble = ({
           </div>
         </div>
       )}
+    </>
+  );
+};
+
+type ISBubble = {
+  userId?: string;
+  text: string;
+  time: string;
+  status: string;
+};
+
+export const SenderBubble = ({ text, time, status }: ISBubble) => {
+  return (
+    <>
+      <div className="flex gap-2 self-end">
+        <div className="w-10 h-10 rounded-full flex items-center justify-center"></div>
+        <div>
+          <div className="bg-gradient-to-r from-purple-700 to-purple-500 px-4 py-2 flex flex-col rounded-r-3xl rounded-l-3xl rounded-tl-md">
+            <p className="text-neutral-300">{text}</p>
+            <p className="self-end text-sm text-neutral-500">
+              {new Date(time).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              })}
+            </p>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

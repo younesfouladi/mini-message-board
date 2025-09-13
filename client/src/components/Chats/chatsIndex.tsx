@@ -4,6 +4,8 @@ import { Spinner } from "@heroui/spinner";
 import { useUsersCount } from "../../hooks/useUsersCount";
 import { useShowUsers } from "../../hooks/useShowUsers";
 import { useShowProfile } from "../../hooks/useShowProfile";
+import MessageInput from "./messageInput";
+import { useRef } from "react";
 
 export const Chats = () => {
   const server = import.meta.env.VITE_SERVER;
@@ -11,6 +13,8 @@ export const Chats = () => {
   const setUsersCount = useUsersCount((states) => states.setUsersCount);
   const setShowUsers = useShowUsers((states) => states.setShowUsers);
   const setShowProfile = useShowProfile((state) => state.setShowProfile);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     fetch(`${server}/api/users/count`)
@@ -71,30 +75,8 @@ export const Chats = () => {
           </svg>
         </button>
       </div>
-      <Messages server={server} />
-      <div className="text-neutral-50 py-4 flex gap-2 items-center justify-center h-fit w-full border-t-1 border-section">
-        <input
-          type="text"
-          placeholder="Type something..."
-          className="bg-section rounded-full py-2 px-4 min-w-[70vw] sm:min-w-100"
-        />
-        <span className="bg-section p-2 rounded-full">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-            />
-          </svg>
-        </span>
-      </div>
+      <Messages server={server} bottomRef={bottomRef} scrollRef={scrollRef} />
+      <MessageInput bottomRef={bottomRef} scrollRef={scrollRef} />
     </div>
   );
 };

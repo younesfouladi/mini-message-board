@@ -18,10 +18,16 @@ interface IData {
 
 type Idb = [string, IData];
 
-export const Messages = ({ server }: { server: string }) => {
+export const Messages = ({
+  server,
+  bottomRef,
+  scrollRef,
+}: {
+  server: string;
+  bottomRef: React.RefObject<HTMLDivElement | null>;
+  scrollRef: React.RefObject<HTMLDivElement | null>;
+}) => {
   const [data, setData] = useState<Idb[] | null>(null);
-  const bottomRef = useRef<HTMLDivElement | null>(null);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
   const [showScroll, setShowScroll] = useState(false);
   const [count, setCount] = useState<number>(50);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +44,7 @@ export const Messages = ({ server }: { server: string }) => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [server]);
+  }, [server, bottomRef]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -53,7 +59,7 @@ export const Messages = ({ server }: { server: string }) => {
     );
     if (bottomRef.current) observer.observe(bottomRef.current);
     return () => observer.disconnect();
-  }, [data]);
+  }, [data, bottomRef, scrollRef]);
 
   const loadMore = useCallback(async () => {
     if (isFetchingMore.current) return;
@@ -73,7 +79,7 @@ export const Messages = ({ server }: { server: string }) => {
     } finally {
       isFetchingMore.current = false;
     }
-  }, [server, count]);
+  }, [server, count, scrollRef]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -96,7 +102,7 @@ export const Messages = ({ server }: { server: string }) => {
     }
 
     return () => observer.disconnect();
-  }, [data, loadMore]);
+  }, [data, loadMore, scrollRef]);
 
   useLayoutEffect(() => {
     if (!isLoadingRef.current) return;
@@ -106,7 +112,7 @@ export const Messages = ({ server }: { server: string }) => {
     const heightDiff = newHeight - prevScroll.current.height;
     scrollRef.current.scrollTop = prevScroll.current.top + heightDiff;
     prevScroll.current = { height: 0, top: 0 };
-  }, [data]);
+  }, [data, scrollRef]);
 
   if (!data)
     return (
