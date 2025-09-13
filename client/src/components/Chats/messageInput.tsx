@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useUserLogin } from "../../hooks/useUserLogin";
 import { useShallow } from "zustand/shallow";
-import { SenderBubble } from "./chatBubbles";
 
 type Imsg = {
   userId: string;
@@ -24,6 +23,12 @@ export default function MessageInput({
   const [input, setinput] = useState("");
   const [message, setMessage] = useState<Imsg[]>([]);
 
+  const createBubble = () => {
+    const childrenCount = scrollRef.current?.children.length;
+
+    console.log();
+  };
+
   const handleSendinput = async () => {
     if (!input.trim()) return;
     const newMessage = {
@@ -32,6 +37,7 @@ export default function MessageInput({
       status: "sending",
       date: new Date().toISOString(),
     };
+    createBubble();
     setMessage((prev) => [...prev, newMessage]);
     setinput("");
     try {

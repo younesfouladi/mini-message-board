@@ -8,6 +8,8 @@ import {
 import { Spinner } from "@heroui/spinner";
 import { ReceiverBubble } from "./chatBubbles";
 import { AnimatePresence, motion } from "motion/react";
+import { useMessages } from "../../hooks/useMessages";
+import { useShallow } from "zustand/shallow";
 
 interface IData {
   userId: string;
@@ -27,7 +29,9 @@ export const Messages = ({
   bottomRef: React.RefObject<HTMLDivElement | null>;
   scrollRef: React.RefObject<HTMLDivElement | null>;
 }) => {
-  const [data, setData] = useState<Idb[] | null>(null);
+  const [data, setData] = useMessages(
+    useShallow((states) => [states.messages, states.setMessages])
+  );
   const [showScroll, setShowScroll] = useState(false);
   const [count, setCount] = useState<number>(50);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +44,7 @@ export const Messages = ({
       .then((res) => res.json())
       .then((data) => setData(data))
       .catch((err) => console.log(`Error Fetching Data : ${err}`));
-  }, [server]);
+  }, [server, setData]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -73,13 +77,13 @@ export const Messages = ({
         method: "POST",
       });
       const json: Idb[] = await res.json();
-      setData(() => json);
+      setData(json);
     } catch (err) {
       console.error(`Error Fetching Previous Messages : ${err}`);
     } finally {
       isFetchingMore.current = false;
     }
-  }, [server, count, scrollRef]);
+  }, [server, count, scrollRef, setData]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
