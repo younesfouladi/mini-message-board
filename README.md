@@ -1,7 +1,6 @@
 # Mini Message Board
 NO DB! (uses JSON for storing data)
 ---
-
 <div align="center">
   <!-- Tech stack badges -->
   <img src="https://img.shields.io/badge/React-20232a?logo=react&logoColor=61dafb&style=for-the-badge" alt="React badge"/>
@@ -103,6 +102,8 @@ VITE_LOCALSTORAGE="local storage key(can be anything)"
 MIT © [younesfouladi](https://github.com/younesfouladi)
 
 ---
+![alt text](https://github.com/younesfouladi/mini-message-board/blob/main/client/public/shots/desktop.png?raw=true)
+![alt text](https://github.com/younesfouladi/mini-message-board/blob/main/client/public/shots/mobile.png?raw=true)
 
 > **Tip:** Fork this repo, customize, and deploy your own mini message board within minutes!
 
