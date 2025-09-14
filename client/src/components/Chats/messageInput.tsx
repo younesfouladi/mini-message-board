@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useUserLogin } from "../../hooks/useUserLogin";
 import { useShallow } from "zustand/shallow";
+import { useMessages } from "../../hooks/useMessages";
 
 type Imsg = {
   userId: string;
+  userName: string;
   text: string;
-  status: string;
-  date: string;
+  time: string;
 };
+
+type Idb = [string, Imsg];
 
 export default function MessageInput({
   bottomRef,
@@ -21,25 +24,24 @@ export default function MessageInput({
     useShallow((states) => [states.userId, states.userName])
   );
   const [input, setinput] = useState("");
-  const [message, setMessage] = useState<Imsg[]>([]);
-
-  const createBubble = () => {
-    const childrenCount = scrollRef.current?.children.length;
-
-    console.log();
-  };
+  const addMessage = useMessages((states) => states.addMessage);
+  const editStatus = useMessages((state) => state.editStatus);
 
   const handleSendinput = async () => {
     if (!input.trim()) return;
-    const newMessage = {
-      userId: userId,
-      text: input,
-      status: "sending",
-      date: new Date().toISOString(),
-    };
-    createBubble();
-    setMessage((prev) => [...prev, newMessage]);
+    const newMessage: Idb = [
+      "sending",
+      {
+        userId: userId,
+        userName: userName,
+        text: input,
+        time: new Date().toISOString(),
+      },
+    ];
+
+    addMessage(newMessage);
     setinput("");
+
     try {
       const req = await fetch(`${server}/api/message/send`, {
         method: "POST",
@@ -47,22 +49,14 @@ export default function MessageInput({
         body: JSON.stringify({
           userId: userId,
           userName: userName,
-          text: input,
-          time: newMessage.date,
+          text: newMessage[1].text,
+          time: newMessage[1].time,
         }),
       });
       await req.json();
-      setMessage((prev) =>
-        prev.map((item) =>
-          item === newMessage ? { ...item, status: "sent" } : item
-        )
-      );
+      editStatus(newMessage, "sent");
     } catch (err) {
-      setMessage((prev) =>
-        prev.map((item) =>
-          item === newMessage ? { ...item, status: "failed" } : item
-        )
-      );
+      editStatus(newMessage, "failed");
       console.error(err);
     }
   };
