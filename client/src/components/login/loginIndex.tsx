@@ -75,7 +75,7 @@ export default function Login() {
               Welcome to <br /> Mini Message Board
             </h1>
             <div className="bg-section p-2 space-y-6 rounded-3xl h-fit">
-              <div className="bg-[url('./images/login-bg.webp')] w-[clamp(200px,70vw,500px)] aspect-square bg-cover rounded-2xl"></div>
+              <div className="bg-[url('/images/login-bg.webp')] w-[clamp(200px,70vw,500px)] aspect-square bg-cover rounded-2xl"></div>
               <div className="w-full px-4">
                 <form className="flex flex-col items-center gap-6 my-8">
                   <label className="flex gap-2 items-center relative">
