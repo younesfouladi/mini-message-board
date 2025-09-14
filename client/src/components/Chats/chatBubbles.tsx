@@ -92,7 +92,7 @@ export const SenderBubble = ({ text, time, status }: ISBubble) => {
                   hour12: false,
                 })}
               </p>
-              {status && status === "sent" ? (
+              {status && status === "sending" ? (
                 <Spinner size="sm" variant="gradient" color="default" />
               ) : status && status === "failed" ? (
                 <X size={18} className="text-red-400" />

@@ -14,6 +14,7 @@ type Idb = [string, Imsg];
 
 export default function MessageInput({
   bottomRef,
+  scrollRef,
 }: {
   bottomRef: React.RefObject<HTMLDivElement | null>;
   scrollRef: React.RefObject<HTMLDivElement | null>;
@@ -41,15 +42,10 @@ export default function MessageInput({
     addMessage(newMessage);
     setinput("");
     try {
-      const req = await fetch(`${server}/api/message/send`, {
+      const req = await fetch(`${server}/api/messages/new`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          userId: userId,
-          userName: userName,
-          text: newMessage[1].text,
-          time: newMessage[1].time,
-        }),
+        body: JSON.stringify(newMessage[1]),
       });
       await req.json();
       editStatus(newMessage, "sent");
