@@ -157,11 +157,11 @@ export default function Users() {
                             </div>
                             {users ? (
                                 <div className="flex flex-col gap-6">
+                                    <a href="https://github.com/younesfouladi/">
+                                        <div className="flex gap-4 items-center">
 
-                                    <div className="flex gap-4 items-center">
 
 
-                                        <a href="https://github.com/younesfouladi/">
                                             <div
                                                 role="img"
                                                 className="bg-pink-500 w-12 h-12 rounded-full flex items-center justify-center"
@@ -176,9 +176,9 @@ export default function Users() {
                                                     Admin
                                                 </p>
                                             </div>
-                                        </a>
-                                    </div>
 
+                                        </div>
+                                    </a>
                                     {users?.map((user) => (
                                         <div key={user.userId} className="flex gap-4 items-center">
                                             <div
