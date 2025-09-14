@@ -17,7 +17,7 @@ function App() {
     ])
   );
   const setIsLogin = useUserLogin((states) => states.setIsLogin);
-
+  console.log(isLogin);
   // First Login
   useEffect(() => {
     if (!localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
