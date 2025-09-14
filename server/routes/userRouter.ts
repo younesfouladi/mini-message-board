@@ -1,8 +1,7 @@
 import express from "express";
-import { getUsersCount } from "../controllers/getUsersCount.ts";
-import { getUsers } from "../controllers/getUsers.ts";
-import { createNewUser } from "../controllers/createNewUser.ts";
-import { getUserMessagesCount } from "../controllers/getUserMessagesCount.ts";
+import { getUsersCount } from "../controllers/getUsersCount";
+import { getUsers } from "../controllers/getUsers";
+import { createNewUser } from "../controllers/createNewUser";
 
 export const userRouter = express.Router();
 

@@ -7,8 +7,8 @@ import type {
   Response,
   NextFunction,
 } from "express";
-import { messageRouter } from "./routes/messageRouter.ts";
-import { userRouter } from "./routes/userRouter.ts";
+import { messageRouter } from "./routes/messageRouter";
+import { userRouter } from "./routes/userRouter";
 
 const port = process.env.PORT;
 const app = express();
