@@ -1,10 +1,4 @@
 # Mini Message Board
-
-![GitHub repo size](https://img.shields.io/github/repo-size/younesfouladi/mini-message-board?color=blue&style=flat-square)
-![Last commit](https://img.shields.io/github/last-commit/younesfouladi/mini-message-board?color=green&style=flat-square)
-![Issues](https://img.shields.io/github/issues/younesfouladi/mini-message-board?style=flat-square)
-![License](https://img.shields.io/github/license/younesfouladi/mini-message-board?style=flat-square)
-
 ---
 
 <div align="center">
@@ -46,11 +40,34 @@ A **fullstack** modern message board app built for speed and simplicity. It feat
 git clone https://github.com/younesfouladi/mini-message-board.git
 cd mini-message-board
 
-# Install dependencies
+# Server
+cd /server
 npm install
+create .env file if doesn'e exist
+# Start the server 
+node --watch app.ts
 
-# Start the server & client (dev mode)
+# Client
+cd /client
+npm install
+create .env file if doesn'e exist
+# Start the server
 npm run dev
+```
+
+---
+
+### .env files content
+
+```bash
+
+# Server
+PORT="server port"
+CLIENT="client server address"
+
+# Client
+VITE_SERVER="server address"
+VITE_LOCALSTORAGE="local storage key(can be anything)"
 ```
 
 ---
