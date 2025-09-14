@@ -40,7 +40,13 @@ export default function Login() {
         body: JSON.stringify({ id: userId, name: userName }),
       });
       await req.json();
-      setIsLogin(true);
+      if (!localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
+        localStorage.setItem(
+          import.meta.env.VITE_LOCALSTORAGE,
+          `${userId},${userName}`
+        );
+        setIsLogin(true);
+      } else return;
     } catch (err) {
       addToast({
         title: "Login Error",

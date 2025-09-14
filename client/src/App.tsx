@@ -8,25 +8,10 @@ import { useShallow } from "zustand/shallow";
 
 function App() {
   const isLogin = useUserLogin((states) => states.isLogin);
-  const [userId, addUserId, userName, setUserName] = useUserLogin(
-    useShallow((state) => [
-      state.userId,
-      state.addUserId,
-      state.userName,
-      state.setUserName,
-    ])
+  const [addUserId, setUserName] = useUserLogin(
+    useShallow((state) => [state.addUserId, state.setUserName])
   );
   const setIsLogin = useUserLogin((states) => states.setIsLogin);
-
-  // First Login
-  useEffect(() => {
-    if (!localStorage.getItem(import.meta.env.VITE_LOCALSTORAGE)) {
-      localStorage.setItem(
-        import.meta.env.VITE_LOCALSTORAGE,
-        `${userId},${userName}`
-      );
-    }
-  }, [userId, setIsLogin, userName]);
 
   // Already Logged in
   useEffect(() => {
