@@ -45,7 +45,7 @@ cd /server
 npm install
 create .env file if doesn'e exist
 # Start the server 
-node --watch app.ts
+npm run dev
 
 # Client
 cd /client
