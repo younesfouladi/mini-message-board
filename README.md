@@ -1,4 +1,5 @@
 # Mini Message Board
+NO DB! (uses JSON for storing data)
 ---
 
 <div align="center">
@@ -93,6 +94,7 @@ VITE_LOCALSTORAGE="local storage key(can be anything)"
 - **Send a message:** Type and hit send — it appears instantly via optimistic update.
 - **Scroll up:** More messages load on demand for efficiency.
 - **No setup required:** Runs out-of-the-box — no database needed.
+- **No DB:** two Json files are in server's Models folder (db.json - msg.json), that's where data will be saved.
 
 ---
 
