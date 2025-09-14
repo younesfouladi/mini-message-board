@@ -172,8 +172,8 @@ export default function Users() {
                                                 <p className="font-bold text-lg">
                                                     Younes Fouladi
                                                 </p>
-                                                <p className="text-sm p-1 border-1 border-neutral-50 rounded-md">
-                                                    Admin
+                                                <p className="text-sm p-0.5 border-1 border-neutral-50 w-fit rounded-md">
+                                                    GITHUB
                                                 </p>
                                             </div>
 
