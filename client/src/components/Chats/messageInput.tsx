@@ -14,7 +14,6 @@ type Idb = [string, Imsg];
 
 export default function MessageInput({
   bottomRef,
-  scrollRef,
 }: {
   bottomRef: React.RefObject<HTMLDivElement | null>;
   scrollRef: React.RefObject<HTMLDivElement | null>;

@@ -20,9 +20,12 @@ export const addNewMessage = async (
 
     if (userId in dbJ) {
       dbJ[userId].messages.push([text, time]);
-      msgJ.push({ userId, userName, text, time });
+      const index = findInsertIndex(msgJ, { userId, userName, text, time });
+      msgJ.splice(index, 0, { userId, userName, text, time });
+
       await fs.writeFile(DB_PATH, JSON.stringify(dbJ, null, 2));
       await fs.writeFile(MSG_PATH, JSON.stringify(msgJ, null, 2));
+
       res.json("ok");
     } else {
       return res.status(400).json({ error: "User doesn't exist" });
@@ -31,3 +34,27 @@ export const addNewMessage = async (
     next(err);
   }
 };
+
+type Message = {
+  userId: string;
+  userName: string;
+  text: string;
+  time: string;
+};
+
+// Binary Search Algorithm
+function findInsertIndex(arr: Message[], newMsg: Message) {
+  let low = 0,
+    high = arr.length;
+  const newTime = new Date(newMsg.time);
+
+  while (low < high) {
+    let mid = Math.floor((low + high) / 2);
+    if (new Date(arr[mid]!.time) < newTime) {
+      low = mid + 1;
+    } else {
+      high = mid;
+    }
+  }
+  return low;
+}
