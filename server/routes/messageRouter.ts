@@ -1,7 +1,7 @@
 import express from "express";
-import { getMessages } from "../controllers/getMessages";
-import { getMessagesCount } from "../controllers/getMessagesCount";
-import { addNewMessage } from "../controllers/addNewMessage";
+import { getMessages } from "../controllers/getMessages.js";
+import { getMessagesCount } from "../controllers/getMessagesCount.js";
+import { addNewMessage } from "../controllers/addNewMessage.js";
 
 export const messageRouter = express.Router();
 
