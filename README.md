@@ -20,7 +20,7 @@ NO DB! (uses JSON for storing data)
 
 ## 🚀 Mini Message Board
 
-A **fullstack** modern message board app built for speed and simplicity. It features real-time pagination, optimistic UI, and efficient server-side message management — all without a database!
+A **fullstack** & **Responsive** modern message board app built for speed and simplicity. It features real-time pagination, optimistic UI, and efficient server-side message management — all without a database!
 
 ---
 
