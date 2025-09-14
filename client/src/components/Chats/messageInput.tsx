@@ -14,7 +14,6 @@ type Idb = [string, Imsg];
 
 export default function MessageInput({
   bottomRef,
-  scrollRef,
 }: {
   bottomRef: React.RefObject<HTMLDivElement | null>;
   scrollRef: React.RefObject<HTMLDivElement | null>;
@@ -41,7 +40,6 @@ export default function MessageInput({
 
     addMessage(newMessage);
     setinput("");
-
     try {
       const req = await fetch(`${server}/api/message/send`, {
         method: "POST",
@@ -59,6 +57,7 @@ export default function MessageInput({
       editStatus(newMessage, "failed");
       console.error(err);
     }
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (

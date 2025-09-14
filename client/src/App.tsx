@@ -7,7 +7,6 @@ import { Profile } from "./components/profile/profileIndex";
 import { useShallow } from "zustand/shallow";
 
 function App() {
-  const server = import.meta.env.VITE_SERVER;
   const isLogin = useUserLogin((states) => states.isLogin);
   const [userId, addUserId, userName, setUserName] = useUserLogin(
     useShallow((state) => [

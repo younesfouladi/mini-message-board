@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { Spinner } from "@heroui/spinner";
-import { ReceiverBubble } from "./chatBubbles";
+import { Bubble } from "./chatBubbles";
 import { AnimatePresence, motion } from "motion/react";
 import { useMessages } from "../../hooks/useMessages";
 import { useShallow } from "zustand/shallow";
@@ -137,22 +137,24 @@ export const Messages = ({
     >
       {data.map((item, index) =>
         index > 0 && data[index - 1][1].userId === item[1].userId ? (
-          <ReceiverBubble
+          <Bubble
             key={item[1].userId + item[1].time}
             userId={item[1].userId}
             userName={item[1].userName}
             text={item[1].text}
             time={item[1].time}
             isLastUser={true}
+            status={item[0]}
           />
         ) : (
-          <ReceiverBubble
+          <Bubble
             key={item[1].userId + item[1].time}
             userId={item[1].userId}
             userName={item[1].userName}
             text={item[1].text}
             time={item[1].time}
             isLastUser={false}
+            status={item[0]}
           />
         )
       )}
